@@ -56,5 +56,8 @@ def parser_arguments():
     parser.add_argument('--limit', required=False, type=int, default=None,
                         metavar="integer number",
                         help='Optional limit on number of images to download')
+    parser.add_argument('--classCount', required=False, type=str, default="custom",
+                        choices=['original', 'custom'],metavar="Default 'custom' ot 'original'",
+                        help='class number according to original sequence or custom sequence')
 
     return parser.parse_args()

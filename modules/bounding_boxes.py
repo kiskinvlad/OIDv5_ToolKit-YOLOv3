@@ -3,10 +3,11 @@ from modules.utils import *
 from modules.downloader import *
 from modules.show import *
 from modules.csv_downloader import *
-
 from modules.utils import bcolors as bc
-
 def bounding_boxes_images(args, DEFAULT_OID_DIR):
+	global row_num
+	row_num = None
+
 
 	if not args.Dataset:
 		dataset_dir = os.path.join(DEFAULT_OID_DIR, 'Dataset')
@@ -14,9 +15,9 @@ def bounding_boxes_images(args, DEFAULT_OID_DIR):
 	else:
 		dataset_dir = os.path.join(DEFAULT_OID_DIR, args.Dataset)
 		csv_dir = os.path.join(DEFAULT_OID_DIR, 'csv_folder')
-
 	name_file_class = 'class-descriptions-boxable.csv'
 	CLASSES_CSV = os.path.join(csv_dir, name_file_class)
+
 
 	if args.command == 'downloader':
 
@@ -34,12 +35,19 @@ def bounding_boxes_images(args, DEFAULT_OID_DIR):
 		folder = ['train', 'validation', 'test']
 		file_list = ['train-annotations-bbox.csv', 'validation-annotations-bbox.csv', 'test-annotations-bbox.csv']
 
+		
 		if args.classes[0].endswith('.txt'):
 			with open(args.classes[0]) as f:
 				args.classes = f.readlines()
 				args.classes = [x.strip() for x in args.classes]
+				# names = args.classes
 		else:
 				args.classes = [arg.replace('_', ' ') for arg in args.classes]
+		# if args.classCount == "original":
+		# 	row_num = df_classes.loc[df_classes[1]==class_name].index[0]
+		# 	# print(row_num)
+		# else:
+		# 	row_num = args.classes.index(class_name)
 
 		if args.multiclasses == '0':
 
@@ -54,7 +62,11 @@ def bounding_boxes_images(args, DEFAULT_OID_DIR):
 				df_classes = pd.read_csv(CLASSES_CSV, header=None)
 
 				class_code = df_classes.loc[df_classes[1] == class_name].values[0][0]
-
+				if args.classCount == "original":
+					row_num = df_classes.loc[df_classes[1]==class_name].index[0]
+					# print(row_num)
+				else:
+					row_num = args.classes.index(class_name)
 				if args.type_csv == 'train':
 					name_file = file_list[0]
 					df_val = TTV(csv_dir, name_file, args.yes)
@@ -104,6 +116,11 @@ def bounding_boxes_images(args, DEFAULT_OID_DIR):
 			class_dict = {}
 			for class_name in class_list:
 				class_dict[class_name] = df_classes.loc[df_classes[1] == class_name].values[0][0]
+				if args.classCount == "original":
+					row_num = df_classes.loc[df_classes[1]==class_name].index[0]
+					# print(row_num)
+				else:
+					row_num = args.classes.index(class_name)
 
 			for class_name in class_list:
 

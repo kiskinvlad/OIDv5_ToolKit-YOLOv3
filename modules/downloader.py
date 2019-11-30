@@ -4,7 +4,11 @@ from tqdm import tqdm
 from modules.utils import images_options
 from modules.utils import bcolors as bc
 from multiprocessing.dummy import Pool as ThreadPool
-
+import torch
+import torch.nn as nn
+import numpy as np
+# from modules.bounding_boxes import row_num     
+# print('names:',names)
 def download(args, df_val, folder, dataset_dir, class_name, class_code, class_list=None, threads = 20):
     '''
     Manage the download of the images and the label maker.
@@ -65,7 +69,8 @@ def download_img(folder, dataset_dir, class_name, images_list, threads):
     image_dir = folder
     download_dir = os.path.join(dataset_dir, image_dir, class_name)
     downloaded_images_list = [f.split('.')[0] for f in os.listdir(download_dir)]
-    images_list = list(set(images_list) - set(downloaded_images_list))
+    print("all images:{},already downloaded:{}".format(len(images_list),len(downloaded_images_list)))
+    images_list = list(set(images_list) - set(downloaded_images_list));
 
     pool = ThreadPool(threads)
 
@@ -85,11 +90,20 @@ def download_img(folder, dataset_dir, class_name, images_list, threads):
     else:
         print(bc.INFO + 'All images already downloaded.' +bc.ENDC)
 
+def xyxy2xywh(x):
+    # Convert bounding box format from [x1, y1, x2, y2] to [x, y, w, h]
+    # y = torch.zeros_like(x) if isinstance(x, torch.Tensor) else np.zeros_like(x)
+    y = [0.,0.,0.,0.]
+    y[0] = (x[0] + x[2])/2
+    y[1] = (x[1] + x[3])/2
+    y[2] = x[:][2] - x[:][0]
+    y[3] = x[:][3] - x[:][1]
+    return y
 
 def get_label(folder, dataset_dir, class_name, class_code, df_val, class_list, args):
     '''
     Make the label.txt files
-    :param folder: trai, validation or test
+    :param folder: train, validation or test
     :param dataset_dir: self explanatory
     :param class_name: self explanatory
     :param class_code: self explanatory
@@ -97,7 +111,9 @@ def get_label(folder, dataset_dir, class_name, class_code, df_val, class_list, a
     :param class_list: list of the class if multiclasses is activated
     :return: None
     '''
+    from modules.bounding_boxes import row_num
     if not args.noLabels:
+        # from modules.bounding_boxes import row_num
         print(bc.INFO + 'Creating labels for {} of {}.'.format(class_name, folder) + bc.ENDC)
 
         image_dir = folder
@@ -113,27 +129,26 @@ def get_label(folder, dataset_dir, class_name, class_code, df_val, class_list, a
 
         groups = df_val[(df_val.LabelName == class_code)].groupby(df_val.ImageID)
         for image in images_label_list:
-            try:
                 current_image_path = os.path.join(download_dir, image + '.jpg')
-                dataset_image = cv2.imread(current_image_path)
-                boxes = groups.get_group(image.split('.')[0])[['XMin', 'XMax', 'YMin', 'YMax']].values.tolist()
+                # print(current_image_path)
+                # dataset_image = cv2.imread(current_image_path)
+                file_name = str(image.split('.')[0]) + '.txt'
+                file_path = os.path.join(label_dir, file_name)
+                boxes = groups.get_group(image.split('.')[0])[['XMin', 'YMin','XMax','YMax']].values.tolist()
                 file_name = str(image.split('.')[0]) + '.txt'
                 file_path = os.path.join(label_dir, file_name)
                 if os.path.isfile(file_path):
                     f = open(file_path, 'a')
+                    # print("appending to FILE completed")
+                    # f.close()
+
                 else:
                     f = open(file_path, 'w')
-
+                    # print("{} {} {} {} {}".format(row_num,x,y,w,h),f)
+                    # f.close()
                 for box in boxes:
-                    box[0] *= int(dataset_image.shape[1])
-                    box[1] *= int(dataset_image.shape[1])
-                    box[2] *= int(dataset_image.shape[0])
-                    box[3] *= int(dataset_image.shape[0])
-
-                    # each row in a file is name of the class_name, XMin, YMix, XMax, YMax (left top right bottom)
-                    print(class_name, box[0], box[2], box[1], box[3], file=f)
-
-            except Exception as e:
-                pass
+                    x,y,w,h = xyxy2xywh(box)
+                    print(row_num,x,y,w,h,image)
+                    print("{} {} {} {} {}".format(row_num,x,y,w,h),file=f)
 
         print(bc.INFO + 'Labels creation completed.' + bc.ENDC)
