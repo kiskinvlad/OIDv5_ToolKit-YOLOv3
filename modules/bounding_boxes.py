@@ -4,9 +4,11 @@ from modules.downloader import *
 from modules.show import *
 from modules.csv_downloader import *
 from modules.utils import bcolors as bc
+from textwrap import dedent
+from lxml import etree
 def bounding_boxes_images(args, DEFAULT_OID_DIR):
-	global row_num
-	row_num = None
+	global row_num,class_name,label_dir
+	row_num,class_name = None, None
 
 
 	if not args.Dataset:
@@ -183,13 +185,13 @@ def bounding_boxes_images(args, DEFAULT_OID_DIR):
 					exit(1)
 
 			download_dir = os.path.join(dataset_dir, image_dir, class_name)
-			label_dir = os.path.join(dataset_dir, image_dir, class_name, 'Label')
+			label_dir = os.path.join(dataset_dir, image_dir, class_name)#, 'Label')#Seperate dir for creating labels if uncommented for labels
 
 			if not os.path.isdir(download_dir):
 				print("[ERROR] Images folder not found")
 				exit(1)
 			if not os.path.isdir(label_dir):
-				print("[ERROR] Labels folder not found")
+				print("[ERROR]  folder not found")
 				exit(1)
 
 			index = 0
