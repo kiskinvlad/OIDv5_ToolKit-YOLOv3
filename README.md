@@ -1,7 +1,7 @@
 <h1 align="center"> ~ Open Images Dataset v5 ToolKit ~ </h1>
 <h1 align="center"> ~ YOLOv3 formatted Annotations Class Wise ~ </h1>
 
-Do you want to build your personal object detector but you don't have enough images to train your model? Do you want to train your personal image classifier, but you are tired of the deadly slowness of ImageNet? Have you already discovered [Open Images Dataset v4](https://storage.googleapis.com/openimages/web/index.html) that has [600](https://storage.googleapis.com/openimages/2018_04/bbox_labels_600_hierarchy_visualizer/circle.html) classes and more than 1,700,000 images with related bounding boxes ready to use? Do you want to exploit it for your projects but you don't want to download gigabytes and gigabytes of data!?
+Do you want to build your personal object detector but you don't have enough images to train your model? Do you want to train your personal image classifier, but you are tired of the deadly slowness of ImageNet? Have you already discovered [Open Images Dataset v5](https://storage.googleapis.com/openimages/web/index.html) that has [600](https://storage.googleapis.com/openimages/2018_04/bbox_labels_600_hierarchy_visualizer/circle.html) classes and more than 1,700,000 images with related bounding boxes ready to use? Do you want to exploit it for your projects but you don't want to download gigabytes and gigabytes of data!?
 
 With this repository we can help you to get the best of this dataset with less effort as possible.
 In particular, with this practical ToolKit written in Python3 we give you, for both object detection and image classification tasks, the following options:
@@ -24,7 +24,7 @@ Me and [Angelo](https://github.com/keldrom) are pleased if our little bit of cod
 
 ![Snippet of the OIDv4 available classes](images/classes.png)
 
-# Open Image Dataset v4
+# Open Image Dataset v5
 All the information related to this huge dataset can be found [here](https://storage.googleapis.com/openimages/web/index.html).
 In these few lines are simply summarized some statistics and important tips.
 
