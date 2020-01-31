@@ -23,23 +23,3 @@ def changeClass(folderPath,existingClass,toClass): #folderPath:where annotations
         writeFile = open(afile,'w') 
         print(*lines,sep='\n',file=writeFile)
         writeFile.close()                                                                                                      
-
-def copyAnn(fromFolder,toFolder):
-        '''if you have to copy files downloaded using Openimages tool kit for custom 
-    objects and you want to copy annotations into single folder without overwriting 
-    them then this script comes handy'''
-    fromFolder = os.path.join(fromFolder,'Label')
-    fromTXT = [txt for txt in os.listdir(fromFolder) if txt.endswith('.txt')]
-    toTXT = [txt for txt in os.listdir(toFolder) if txt.endswith('.txt')]
-    for fromFile in fromTXT:
-        if fromFile in toTXT:
-            appendFile = open(os.path.join(fromFolder,fromFile),'r')
-            appendFile = [line.strip() for line in appendFile.readlines()]
-            existFile = open(os.path.join(toFolder,fromFile),'r')
-            existFile = [line.strip() for line in existFile.readlines()]
-            allAnno = set(existFile+appendFile)
-            existFile = open(os.path.join(toFolder,fromFile),'w')
-            print(*allAnno,sep='\n',file=existFile)
-        else:
-            shutil.copyfile(os.path.join(fromFolder,fromFile),toFolder)
-
