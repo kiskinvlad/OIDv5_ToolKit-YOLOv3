@@ -6,8 +6,7 @@ root_path = "/media/user1/storage-1/Rajashekar/OIDv4_ToolKit/OID/csv/trainAnno.t
 final_path = "/media/user1/storage-1/Rajashekar/OIDv4_ToolKit/OID/csv/Annotations/"
 txt = open(root_path,'r')
 
-for path in txt.readlines():
-    path = path.strip()
+for path.strip() in txt.readlines():
     baseName = os.path.basename(path)
     finalPath = os.path.join(final_path,baseName)
     if os.path.exists(finalPath):
