@@ -148,7 +148,7 @@ def get_label(folder, dataset_dir, class_name, class_code, df_val, class_list, a
                     # f.close()
                 for box in boxes:
                     x,y,w,h = xyxy2xywh(box)
-                    print(row_num,x,y,w,h,image)
+#                     print(row_num,x,y,w,h,image)
                     print("{} {} {} {} {}".format(row_num,x,y,w,h),file=f)
 
         print(bc.INFO + 'Labels creation completed.' + bc.ENDC)
