@@ -1,5 +1,6 @@
 <h1 align="center"> ~ Open Images Dataset v5 ToolKit ~ </h1>
 <h1 align="center"> ~ YOLOv3 formatted Annotations Class Wise ~ </h1>
+##  This Repo allows you to download you required number of class images only instead of downloading whole dataset
 
 Do you want to build your personal object detector but you don't have enough images to train your model? Do you want to train your personal image classifier, but you are tired of the deadly slowness of ImageNet? Have you already discovered [Open Images Dataset v5](https://storage.googleapis.com/openimages/web/index.html) that has [600](https://storage.googleapis.com/openimages/2018_04/bbox_labels_600_hierarchy_visualizer/circle.html) classes and more than 1,700,000 images with related bounding boxes ready to use? Do you want to exploit it for your projects but you don't want to download gigabytes and gigabytes of data!?
 
@@ -157,17 +158,24 @@ Again if we want to download Apple and Oranges, but in a common folder
 
 ### Annotations
 
-<img align="right" src="images/rectangle.png">
+<img align="right" src="images/xywh.png">
 
 In the __original__ dataset the coordinates of the bounding boxes are made in the following way:
 
-**XMin**, **XMax**, **YMin**, **YMax**: coordinates of the box, in normalized image coordinates. XMin is in [0,1], where 0 is the leftmost pixel, and 1 is the rightmost pixel in the image. Y coordinates go from the top pixel (0) to the bottom pixel (1).
+~~**XMin**, **XMax**, **YMin**, **YMax**: coordinates of the box, in normalized image coordinates. XMin is in [0,1], where 0 is the leftmost pixel, and 1 is the rightmost pixel in the image. Y coordinates go from the top pixel (0) to the bottom pixel (1).~~
 
+But **YOLO** uses the annotations in a different manner with a small function inclusion this repo can deliver dataset **ClassNum,Xcenter,Ycenter,W,H** per class
+which is suitable for **darknet training**
+
+But there is some more work to be done after this this repo can now give class wise annotations and images(downloading per class from aws) which is using space on Harddisk doubled number of times so if you need only annotations per class then comment this lines in files `modules/downloader.py` **line 54** download_img instead senad a list of imageID's for that class which will do only annotations and save space after that you need to merge the all annotations using shell script or so.As of now I'm busy in my work schedule if I get some time I will improve this implementation.
+
+ 
 However, in order to accomodate a more intuitive representation and give the maximum flexibility, every `.txt` annotation is made like:
 
-`name_of_the_class    left    top     right     bottom`
+~~`name_of_the_class    left    top     right     bottom`~~
+`num_of_class Xcenter Ycenter relativeWidth relativeHeight`
+~~where each coordinate is denormalized. So, the four different values correspond to the actual number of pixels of the related image.~~
 
-where each coordinate is denormalized. So, the four different values correspond to the actual number of pixels of the related image.
 
 If you don't need the labels creation use `--noLabels`.
 
@@ -217,18 +225,18 @@ The Toolkit automatically will put the dataset and the csv folder in specific fo
 
 R = required, O = optional
 
-# 4.0 Use the ToolKit to visualize the labeled images
-The ToolKit is useful also for visualize the downloaded images with the respective labels.
+~~# 4.0 Use the ToolKit to visualize the labeled images~~
+~~The ToolKit is useful also for visualize the downloaded images with the respective labels.~~
 ```bash
    python3 main.py visualizer
    ```
-  In this way the default `Dataset` folder will be pointed to search the images and labels automatically. To point
-  another folder it's possible to use `--Dataset` optional argument.
+ ~~In this way the default `Dataset` folder will be pointed to search the images and labels automatically. To point
+  another folder it's possible to use `--Dataset` optional argument.~~
 ```bash
    python3 main.py visualizer --Dataset desired_folder
    ```
-Then the system will ask you which folder to visualize (train, validation or test) and the desired class.
-Hence with `d` (next), `a` (previous) and `q` (exit) you will be able to explore all the images. Follow the menu for all the other options.
+~~Then the system will ask you which folder to visualize (train, validation or test) and the desired class.
+Hence with `d` (next), `a` (previous) and `q` (exit) you will be able to explore all the images. Follow the menu for all the other options.~~
 
 <p align="center">
   <img width="540" height="303" src="images/visualizer_example.gif">
@@ -243,13 +251,13 @@ Hence with `d` (next), `a` (previous) and `q` (exit) you will be able to explore
 # Citation
 Use this bibtex if you want to cite this repository:
 ```
-@misc{OIDv4_ToolKit,
+@misc{OIDv5_ToolKit-YOLOv3,
   title={Toolkit to download and visualize single or multiple classes from the huge Open Images v4 dataset},
-  author={Vittorio, Angelo},
-  year={2018},
+  author={RajashekarY,Vittorio, Angelo},
+  year={2019},
   publisher={Github},
   journal={GitHub repository},
-  howpublished={\url{https://github.com/EscVM/OIDv4_ToolKit}},
+  howpublished={\url{https://github.com/RajashekarY/OIDv5_ToolKit-YOLOv3}},
 }
 ```
 
