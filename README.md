@@ -1,5 +1,5 @@
 <h1 align="center"> ~ Google Open Images Dataset v5 ToolKit ~ </h1>
-<h1 align="center"> ~ YOLOv3 formatted Annotations Class Wise ~ </h1>
+<h1 align="center"> ~ YOLO formatted Annotations Class Wise ~ </h1>
 <h1 align="center"> ~ Object Detection Dataset ~ </h1>
 
 ##  This Repo allows you to download you required number of class images only instead of downloading whole dataset
