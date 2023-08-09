@@ -64,7 +64,7 @@ Python3 is required.
 
 1. Clone this repository
    ```bash
-   git clone https://github.com/RajashekarY/OIDv5_ToolKit-YOLOv3.git
+   git clone https://github.com/kiskinvlad/OIDv5_ToolKit-YOLOv3.git
   
    ```
 2. Install the required packages
@@ -148,6 +148,17 @@ main_folder
 If you have already downloaded the different csv files you can simply put them in the `csv_folder`. The script takes automatically care of the download of these files, but if you want to manually download them for whatever reason [here](https://storage.googleapis.com/openimages/web/download.html) you can find them.
 
 If you interupt the downloading script `ctrl+d` you can always restart it from the last image downloaded.
+
+To download images for train:
+  ```bash
+   python3 main.py downloader --classes Apple --type_csv train
+   ```
+Then we could change class id for image notations using next: 
+```bash
+    python class_id_modifier.py ./OID/Dataset/train/Apple/Label 1
+```
+Where ./OID/Dataset/train/Apple/Label path to folder with .txt labels and 1 is class id we want to set 
+
 
 ## 2.2 Download multiple classes in a common folder
 This option allows to download more classes, but in a common folder. Also the related notations are mixed together with
@@ -256,7 +267,7 @@ Use this bibtex if you want to cite this repository:
 ```
 @misc{OIDv5_ToolKit-YOLOv3,
   title={Toolkit to download and visualize single or multiple classes from the huge Open Images v4 dataset},
-  author={RajashekarY,Vittorio, Angelo},
+  author={Kiskin Vlad, RajashekarY,Vittorio, Angelo},
   year={2019},
   publisher={Github},
   journal={GitHub repository},
